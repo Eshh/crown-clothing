@@ -11,7 +11,7 @@ const Navigation = () => {
           <CrownSvg className="logo" />
         </Link>
         <div className="nav-links-container">
-          <Link className="nav-link" to="/signin">
+          <Link className="nav-link" to="/auth">
             Sign In
           </Link>
         </div>
