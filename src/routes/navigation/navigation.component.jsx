@@ -8,11 +8,11 @@ const Navigation = () => {
     <>
       <div className="navigation">
         <Link className="logo-caontainer" to="/">
-          <CrownSvg className="logo" />{" "}
+          <CrownSvg className="logo" />
         </Link>
         <div className="nav-links-container">
-          <Link className="nav-link" to="/temp">
-            Test
+          <Link className="nav-link" to="/signin">
+            Sign In
           </Link>
         </div>
       </div>
