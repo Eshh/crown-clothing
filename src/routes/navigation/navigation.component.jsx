@@ -5,15 +5,13 @@ import "./navigation.styles.scss";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/user.context";
 import { signOutUser } from "../../utils/firebase/firebase.util";
+import CartIcon from "../../components/cart-icon/cart-icon.component";
+import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
+import { CartContext } from "../../contexts/cart.context";
 
 const Navigation = () => {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
-  console.log(currentUser);
-
-  const signOut = async () => {
-    await signOutUser();
-    setCurrentUser(null);
-  };
+  const { currentUser } = useContext(UserContext);
+  const { isCartOpen } = useContext(CartContext);
   return (
     <>
       <div className="navigation">
@@ -21,8 +19,11 @@ const Navigation = () => {
           <CrownSvg className="logo" />
         </Link>
         <div className="nav-links-container">
+          <Link className="logo-caontainer" to="/shop">
+            SHOP
+          </Link>
           {currentUser ? (
-            <span onClick={signOut} className="nav-link">
+            <span onClick={signOutUser} className="nav-link">
               Sign out
             </span>
           ) : (
@@ -30,8 +31,11 @@ const Navigation = () => {
               Sign In
             </Link>
           )}
+            <CartIcon />
         </div>
+        {isCartOpen && <CartDropdown />}
       </div>
+
       <Outlet />
     </>
   );

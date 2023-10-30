@@ -3,7 +3,6 @@ import { useContext, useState } from "react";
 import {
   auth,
   signInWithGooglePopup,
-  signInWithGoogleRedirect,
   createUserDocumentFromAuth,
   signInAuthUserWithEmailAndPassword,
 } from "../../utils/firebase/firebase.util";
@@ -21,7 +20,6 @@ const SignIn = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
-  const { setCurrentUser } = useContext(UserContext);
 
   const handleFormFields = (e) => {
     const { name, value } = e.target;
@@ -36,7 +34,6 @@ const SignIn = () => {
         email,
         password
       );
-      setCurrentUser(user);
 
       setFormFields(defaultFormFields);
     } catch (e) {
@@ -65,9 +62,7 @@ const SignIn = () => {
   //     }
   //   }, []);
   const loginWithGoogle = async () => {
-    const res = await signInWithGooglePopup();
-    const userDocRef = await createUserDocumentFromAuth(res.user);
-    setCurrentUser(userDocRef);
+    await signInWithGooglePopup();
   };
   return (
     <div className="sign-up-container">
