@@ -10,7 +10,16 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 
-import { getFirestore, getDoc, setDoc, doc } from "firebase/firestore";
+import {
+  getFirestore,
+  getDoc,
+  setDoc,
+  doc,
+  collection,
+  writeBatch,
+  query,
+  getDocs,
+} from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -29,6 +38,32 @@ const provider = new GoogleAuthProvider();
 provider.setCustomParameters({
   prompt: "select_account",
 });
+
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionReference = collection(db, collectionKey);
+  const batch = writeBatch(db);
+  objectsToAdd.forEach((e) => {
+    const docRef = doc(collectionReference, e.title.toLowerCase());
+    batch.set(docRef, e);
+  });
+  await batch.commit();
+  console.log("done");
+};
+
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, "categories");
+  const q = query(collectionRef);
+  const querySnapshot = await getDocs(q);
+  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+  return categoryMap;
+};
 
 export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
@@ -74,5 +109,5 @@ export const signInAuthUserWithEmailAndPassword = async (email, password) => {
 export const signOutUser = async () => await signOut(auth);
 
 export const onAuthStateChangedListener = (callback) => {
-  return onAuthStateChanged(auth,callback);
+  return onAuthStateChanged(auth, callback);
 };
