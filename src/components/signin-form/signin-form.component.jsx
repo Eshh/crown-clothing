@@ -8,7 +8,7 @@ import {
 } from "../../utils/firebase/firebase.util";
 import FormInput from "../form-input/form-input.component";
 import "./sign-in-form.styles.scss";
-import Button from "../button/button.component";
+import Button,{BUTTON_TYPE_CLASSES} from "../button/button.component";
 import { UserContext } from "../../contexts/user.context";
 
 const defaultFormFields = {
@@ -37,7 +37,6 @@ const SignIn = () => {
 
       setFormFields(defaultFormFields);
     } catch (e) {
-      console.log(e);
       switch (e.code) {
         case "auth/invalid-login-credentials":
           alert("Invalid login credentials");
@@ -46,7 +45,6 @@ const SignIn = () => {
           alert("User not found");
           break;
         default:
-          console.log(e);
       }
     }
   };
@@ -85,9 +83,9 @@ const SignIn = () => {
           name="password"
           value={password}
         />
-        <div className="buttons-container">
+      <div className="buttons-container">
           <Button type="submit">Sign in</Button>
-          <Button buttonType="google" type="button" onClick={loginWithGoogle}>
+          <Button buttonType={BUTTON_TYPE_CLASSES.google} type="button" onClick={loginWithGoogle}>
             Google Sign in
           </Button>
         </div>
